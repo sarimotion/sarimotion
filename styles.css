@@ -31,10 +31,26 @@ body {
 }
 
 body {
-  padding: 1.5rem;
+  padding: 0;
+  overflow-x: hidden;
   background: #fff;
   font-family: 'Fragment Mono', monospace;
   background-image: linear-gradient(to right, var(--morado-oscuro), var(--morado-claro), var(--morado-oscuro));
+}
+
+.fit {
+  width: min(100vw, 920px);
+  height: calc(min(100vw, 920px) * 669 / 652);
+  margin: 0 auto;
+  overflow: visible;
+}
+
+.stage {
+  width: 920px;
+  height: calc(920px * 669 / 652);
+  position: relative;
+  transform-origin: top left;
+  transform: scale(calc(min(100vw, 920px) / 920px));
 }
 
 h1,
@@ -49,9 +65,9 @@ h6 {
 }
 
 table {
-  width: min(94vw, 920px);
-  height: calc(min(94vw, 920px) * 669 / 652);
-  margin: 0 auto;
+  width: 920px;
+  height: 100%;
+  margin: 0;
   border-collapse: collapse;
   table-layout: fixed;
   text-align: right;
@@ -116,11 +132,12 @@ table {
 }
 
 #llavero{
-    position:absolute;
+    position: absolute;
     top: 34%;
-    left: 24%;
-    width: 573px;
-    z-index: 1;
+    right: 45%;
+    width: 62.283%;
+    height: auto;
+    z-index: 2;
 }
 
 #celda7{
@@ -164,9 +181,10 @@ table {
 
 #world-gif{
     position: absolute;
-    left: 30.5%;
-    top: 5%;
-    width: 143px;
+    left: 10%;
+    top: 3%;
+    width: 15.543%;
+    height: auto;
 }
 
 .celda8-content{
