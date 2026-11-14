@@ -44,14 +44,14 @@ body {
 
 .fit {
   width: min(100vw, 920px);
-  height: calc(min(100vw, 920px) * 669 / 652);
+  height: calc(min(100vw, 920px) * 944 / 920);
   margin: 0 auto;
   overflow: visible;
 }
 
 .stage {
   width: 920px;
-  height: calc(920px * 669 / 652);
+  height: 944px;
   position: relative;
   transform-origin: top left;
   transform: scale(calc(min(100vw, 920px) / 920px));
@@ -70,30 +70,34 @@ h6 {
 
 table {
   width: 920px;
-  height: 100%;
+  height: 944px;
   margin: 0;
   border-collapse: collapse;
+  border-spacing: 0;
   table-layout: fixed;
   text-align: right;
 }
 
-.c1 { width: 11.503%; }
-.c2 { width: 16.718%; }
-.c3 { width: 14.417%; }
-.c4 { width: 40.031%; }
-.c5 { width: 5.521%; }
-.c6 { width: 11.81%; }
+.c1 { width: 106px; }
+.c2 { width: 154px; }
+.c3 { width: 132px; }
+.c4 { width: 368px; }
+.c5 { width: 51px; }
+.c6 { width: 109px; }
 
-.r1 { height: 13.753%; }
-.r2 { height: 17.788%; }
-.r3 { height: 17.788%; }
-.r4 { height: 22.272%; }
-.r5 { height: 12.706%; }
-.r6 { height: 11.51%; }
-.r7 { height: 4.185%; }
+.r1 { height: 130px; }
+.r2 { height: 168px; }
+.r3 { height: 168px; }
+.r4 { height: 210px; }
+.r5 { height: 120px; }
+.r6 { height: 109px; }
+.r7 { height: 39px; }
 
 .celda {
   padding: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
 }
 
 #celda5,#celda8,#celda10{
@@ -102,23 +106,14 @@ table {
 
 #celda1{
     background-image: url(images/Pato-esquina.png);
-    background-size: cover;
-    background-position: right;
-    background-repeat: no-repeat;
 }
 
 #celda2{
     background-image: url(images/Bienvenidos.png);
-    background-size: cover;
-    background-position: bottom;
-    background-repeat: no-repeat;
 }
 
 #celda6 {
     background-image: url(images/Pecera.png);
-    background-size:cover;
-    background-position:left;
-    background-repeat: no-repeat;
 }
 
 .intro-text{
@@ -146,37 +141,22 @@ table {
 
 #celda7{
     background-image: url(images/Lateral-izq.png);
-    background-size: contain;
-    background-position: bottom;
-    background-repeat: no-repeat;
 }
 
 #celda13{
     background-image: url(images/Esquina-izq.png);
-    background-size: cover;
-    background-position:left;
-    background-repeat:repeat-x reverse;
 }
 
 #celda9 {
     background-image: url(images/Esquina-interior.png);
-    background-size: cover;
-    background-position: left;
-    background-repeat: no-repeat;
 }
 
 #celda11 {
     background-image: url(images/Lateral-inferior.png);
-    background-size: contain;
-    background-position:right;
-    background-repeat: no-repeat;
 }
 
 #celda3 {
-    background-image: url(images/Lateral-der.png); 
-    background-size: contain;
-    background-position: left;
-    background-repeat: no-repeat;
+    background-image: url(images/Lateral-der.png);
 }  
 
 #celda12 {
