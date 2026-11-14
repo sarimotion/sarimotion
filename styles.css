@@ -95,6 +95,7 @@ table {
 
 .celda {
   padding: 0;
+  /*border: 1px solid #000;*/
   background-repeat: no-repeat;
   background-position: center;
   background-size: 100% 100%;
@@ -118,6 +119,8 @@ table {
 
 .intro-text{
     display: inline-block;
+    position: relative;
+    right: 30px;
     font-size: 1.5rem;
     padding: 2px;
     border: 1px dashed #000;
@@ -127,6 +130,7 @@ table {
 .intro-paragraph{
     display: block;
     font-size: 0.9rem;
+    width: 90%;
     margin-right: 30px;
 }
 
@@ -137,6 +141,14 @@ table {
     width: 62.283%;
     height: auto;
     z-index: 2;
+}
+
+#cursor{
+    position: absolute;
+    top: 100%;
+    left: 100%;
+    width: 24px;
+    height: auto;
 }
 
 #celda7{
@@ -195,10 +207,34 @@ table {
 }
 
 .celda8-content-items{
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     background-color: #ffffff;
     border: 5px solid #000;
     border-radius: 10px;
     box-shadow: 5px 5px 0px 0 rgba(0, 0, 0, 1);
+}
+
+.celda8-content h2 {
+    font-size: 1.8rem;
+    margin: 0;
+    padding-bottom: 10px;
+}
+
+#hoja-rasgada{
+    position: absolute;
+    bottom: 80px;
+    left: 0;
+    height: auto;
+    z-index: -1;
+}
+
+#celda9{
+    text-align: center;
+    font-size: 1.3rem;
+    padding-top: 40px;
+}
+
+.socials-container{
+    padding-top: 10px;
 }
