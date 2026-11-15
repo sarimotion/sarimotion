@@ -16,7 +16,7 @@
 <body>
   <div class="fit">
   <div class="stage">
-  <table>
+  <table class="table-container">
     <colgroup>
       <col class="c1">
       <col class="c2">
@@ -30,8 +30,49 @@
         <img src="images/world-gif.gif" alt="Pato girando" id="world-gif">
       </td>
       <td class="celda" id="celda2" colspan="2"></td>
-      <td class="celda" id="celda3" rowspan="6"></td>
-      <td class="celda" id="celda4" rowspan="6" id="celda4-content"></td>
+      <td class="celda" id="celda3" rowspan="6">
+        <img src="images/Disc.png" alt="Disco" id="disc">
+      </td>
+      <td class="celda" id="celda4" rowspan="6">
+        <table class="paint-container">
+          <colgroup>
+            <col class="p1">
+            <col class="p2">
+          </colgroup>
+          <tr class="rp">
+            <td class="celda-paint" id="laso">1</td>
+            <td class="celda-paint" id="seleccion">2</td>
+          </tr>
+          <tr class="rp">
+            <td class="celda-paint" id="borrador">3</td>
+            <td class="celda-paint" id="bote">4</td>
+          </tr>
+          <tr class="rp">
+            <td class="celda-paint" id="gotas">5</td>
+            <td class="celda-paint" id="lupa">6</td>
+          </tr>
+          <tr class="rp">
+            <td class="celda-paint" id="lapiz">7</td>
+            <td class="celda-paint" id="brocha">8</td>
+          </tr>
+          <tr class="rp">
+            <td class="celda-paint" id="aerosol">9</td>
+            <td class="celda-paint" id="texto">10</td>
+          </tr>
+          <tr class="rp">
+            <td class="celda-paint" id="linea">11</td>
+            <td class="celda-paint" id="curva">12</td>
+          </tr>
+          <tr class="rp">
+            <td class="celda-paint" id="rectangulo">13</td>
+            <td class="celda-paint" id="forma">14</td>
+          </tr>
+          <tr class="rp">
+            <td class="celda-paint" id="circulo">15</td>
+            <td class="celda-paint" id="rect-redondo">16</td>
+          </tr>
+        </table>
+      </td>
     </tr>
     <tr class="r2">
       <td class="celda" id="celda5" colspan="2">
@@ -49,7 +90,6 @@
     <tr class="r4">
       <td class="celda" id="celda7" rowspan="1"></td>
       <td class="celda" id="celda8" colspan="3">
-        
         <div class="celda8-content">
             <h2>¿Qué puedes encontrar?</h2>
             <div class="celda8-content-items-container">
@@ -58,6 +98,7 @@
                 <div class="celda8-content-items" id="ilustraciones"></div>
             </div>
         </div>
+        <img src="images/Cerrado.png" alt="Celular cerrado" id="celular-cerrado">
       </td>
     </tr>
     <tr class="r5">
@@ -70,7 +111,14 @@
         </div>
         <img src="images/HojaRasgada.png" alt="Hoja Rasgada" id="hoja-rasgada">
       </td>
-      <td class="celda" id="celda10"></td>
+      <td class="celda" id="celda10">
+        <div class="celda10-content">
+          <h2>
+            Prende el cel para acceder
+          </h2>
+          <img src="images/Flecha.png" alt="Flecha" id="flecha">
+        </div>
+      </td>
     </tr>
     <tr class="r6">
       <td class="celda" id="celda11" colspan="4"></td>

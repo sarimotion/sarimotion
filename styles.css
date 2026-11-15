@@ -68,7 +68,7 @@ h6 {
     font-style: normal;
 }
 
-table {
+.table-container{
   width: 920px;
   height: 944px;
   margin: 0;
@@ -78,12 +78,32 @@ table {
   text-align: right;
 }
 
+.paint-container{
+  position: absolute;
+  top: 122px;
+  left: 4px;
+  width: 72px;
+  margin: 0;
+  border: 8px solid #000;
+  border-radius: 10px;
+  border-spacing: 0;
+  table-layout: fixed;
+  text-align: center;
+  z-index: 3;
+}
+ .paint-container td{
+  background-color: #ccc;
+  border: 3px outset #000;
+ }
+
 .c1 { width: 106px; }
 .c2 { width: 154px; }
 .c3 { width: 132px; }
 .c4 { width: 368px; }
 .c5 { width: 51px; }
 .c6 { width: 109px; }
+
+.p1, .p2 { width: 36px; }
 
 .r1 { height: 130px; }
 .r2 { height: 168px; }
@@ -92,6 +112,10 @@ table {
 .r5 { height: 120px; }
 .r6 { height: 109px; }
 .r7 { height: 39px; }
+
+.rp {
+    height: 36px;
+}
 
 .celda {
   padding: 0;
@@ -115,6 +139,11 @@ table {
 
 #celda6 {
     background-image: url(images/Pecera.png);
+}
+
+#celda4{
+  position: relative;
+  vertical-align: top;
 }
 
 .intro-text{
@@ -149,6 +178,13 @@ table {
     left: 100%;
     width: 24px;
     height: auto;
+}
+
+#disc {
+    position: relative;
+    right:210px;
+    top: 40px;
+    z-index: -4;
 }
 
 #celda7{
@@ -237,4 +273,47 @@ table {
 
 .socials-container{
     padding-top: 10px;
+}
+
+.celda-paint{
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.celda-paint:active{
+    background-color: #f7f7f7;
+    border: 3px inset #000;
+}
+
+.celda10-content{
+    position: relative;
+    left:30px;
+    bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 221px;
+    height: 80px;
+    background-color: #000;
+    border-radius: 100px;
+    color: #fff;
+    line-height: 1.2rem;
+    text-align:right;
+    z-index: 5;
+}
+
+.celda10-content h2{
+    margin: auto;
+    font-size: 1.3rem;
+    display: inline-block;
+    width: 47%;
+    text-align: center;
+}
+
+#celular-cerrado{
+    position: absolute;
+    top: 360px;
+    right: 30px;
+    height: auto;
+    z-index: 1;
 }
