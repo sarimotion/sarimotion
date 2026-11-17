@@ -40,36 +40,68 @@
             <col class="p2">
           </colgroup>
           <tr class="rp">
-            <td class="celda-paint" id="laso">1</td>
-            <td class="celda-paint" id="seleccion">2</td>
+            <td class="celda-paint" id="laso">
+              <img src="images/free-select.png" alt="Lazo de selección">
+            </td>
+            <td class="celda-paint" id="seleccion">
+              <img src="images/rect-select.png" alt="Rectángulo de selección">
+            </td>
           </tr>
           <tr class="rp">
-            <td class="celda-paint" id="borrador">3</td>
-            <td class="celda-paint" id="bote">4</td>
+            <td class="celda-paint" id="borrador">
+              <img src="images/eraser.png" alt="Borrador">
+            </td>
+            <td class="celda-paint" id="bote">
+              <img src="images/bucket.png" alt="Bote de pintura">
+            </td>
           </tr>
           <tr class="rp">
-            <td class="celda-paint" id="gotas">5</td>
-            <td class="celda-paint" id="lupa">6</td>
+            <td class="celda-paint" id="gotas">
+              <img src="images/picker.png" alt="Cuentagotas">
+            </td>
+            <td class="celda-paint" id="lupa">
+              <img src="images/zoom.png" alt="Lupa">
+            </td>
           </tr>
           <tr class="rp">
-            <td class="celda-paint" id="lapiz">7</td>
-            <td class="celda-paint" id="brocha">8</td>
+            <td class="celda-paint" id="lapiz">
+              <img src="images/pencil.png" alt="Lapiz">
+            </td>
+            <td class="celda-paint" id="brocha">
+              <img src="images/brush.png" alt="Brocha">
+            </td>
           </tr>
           <tr class="rp">
-            <td class="celda-paint" id="aerosol">9</td>
-            <td class="celda-paint" id="texto">10</td>
+            <td class="celda-paint" id="aerosol">
+              <img src="images/spray.png" alt="Aerosol">
+            </td>
+            <td class="celda-paint" id="texto">
+              <img src="images/text.png" alt="Texto">
+            </td>
           </tr>
           <tr class="rp">
-            <td class="celda-paint" id="linea">11</td>
-            <td class="celda-paint" id="curva">12</td>
+            <td class="celda-paint" id="linea">
+              <img src="images/line.png" alt="Línea">
+            </td>
+            <td class="celda-paint" id="curva">
+              <img src="images/curve.png" alt="Curva">
+            </td>
           </tr>
           <tr class="rp">
-            <td class="celda-paint" id="rectangulo">13</td>
-            <td class="celda-paint" id="forma">14</td>
+            <td class="celda-paint" id="rectangulo">
+              <img src="images/rect-shape.png" alt="Rectángulo">
+            </td>
+            <td class="celda-paint" id="forma">
+              <img src="images/shape.png" alt="Forma">
+            </td>
           </tr>
           <tr class="rp">
-            <td class="celda-paint" id="circulo">15</td>
-            <td class="celda-paint" id="rect-redondo">16</td>
+            <td class="celda-paint" id="circulo">
+              <img src="images/ellipse.png" alt="Elipse">
+            </td>
+            <td class="celda-paint" id="rect-redondo">
+              <img src="images/rect-round.png" alt="Rectángulo redondo">
+            </td>
           </tr>
         </table>
       </td>
@@ -98,7 +130,10 @@
                 <div class="celda8-content-items" id="ilustraciones"></div>
             </div>
         </div>
-        <img src="images/Cerrado.png" alt="Celular cerrado" id="celular-cerrado">
+        <img src="images/Cerrado.png" alt="Celular cerrado" id="celular-cerrado" usemap="#mapa-celular">
+        <map name="mapa-celular">
+          <area id="boton-verde" shape="circle" coords="187,366,24" href="#celular" alt="Prender el celular">
+        </map>
       </td>
     </tr>
     <tr class="r5">
@@ -107,7 +142,7 @@
         <span>follow meahh</span>
         <div class="socials-container">
           <a href="https://www.instagram.com/sari.motion/" target="_blank"><img src="images/made_with_windows.gif" alt="Instagram" id="instagram"></a>
-          <a href="https://www.tiktok.com/@sari.motion" target="_blank"><img src="images/mangamaisanime.gif" alt="TikTok" id="tiktok"></a>
+          <a href="https://www.tiktok.com/@sari.motion" target="_blank"><img src="images/tiktok.gif" alt="TikTok" id="tiktok"></a>
         </div>
         <img src="images/HojaRasgada.png" alt="Hoja Rasgada" id="hoja-rasgada">
       </td>
@@ -131,5 +166,13 @@
   </table>
   </div>
   </div>
+  <script>
+    document.getElementById("boton-verde").addEventListener("click", function (event) {
+      event.preventDefault();
+      var celular = document.getElementById("celular-cerrado");
+      celular.src = "images/Abierto.png";
+      celular.alt = "Celular abierto";
+    });
+  </script>
 </body>
 </html>
