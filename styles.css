@@ -34,18 +34,39 @@ body {
   min-height: 100vh;
   padding: 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
   overflow-x: hidden;
   background: #fff;
   font-family: 'Fragment Mono', monospace;
-  background-image: linear-gradient(to right, var(--morado-oscuro), var(--morado-claro), var(--morado-oscuro));
+  /*background-image: linear-gradient(to right, var(--morado-oscuro), var(--morado-claro), var(--morado-oscuro));*/
+  background-image: url(images/Fondo.jpg);
+  background-size: cover;
+  background-position: center;
+}
+
+.ticker {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 2px;
+  background: #000;
+  color: #fff;
+  font-family: "Fragment Mono", monospace;
+  font-size: 1rem;
+  line-height: 1.2;
+  border: 0;
+}
+
+#ticker-text {
+    color: var(--amarillo);
 }
 
 .fit {
   width: min(100vw, 920px);
   height: calc(min(100vw, 920px) * 944 / 920);
-  margin: 0 auto;
+  margin: auto;
   overflow: visible;
 }
 
@@ -264,6 +285,15 @@ h6 {
     }
 }
 
+@keyframes cd-rotating {
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
+
 #cursor{
     position: absolute;
     top: 100%;
@@ -274,9 +304,15 @@ h6 {
 
 #disc {
     position: relative;
-    right:210px;
+    right:135px;
     top: 40px;
-    z-index: -4;
+    z-index: 1;
+    pointer-events: auto;
+    animation: cd-rotating 10s linear infinite;
+}
+
+#disc:hover {
+    cursor: pointer;
 }
 
 #celda7{
@@ -335,8 +371,8 @@ h6 {
 }
 
 .celda8-content-items{
-    width: 120px;
-    height: 120px;
+    width: 130px;
+    height: 130px;
     background-color: #ffffff;
     border: 5px solid #000;
     border-radius: 10px;
@@ -409,8 +445,9 @@ h6 {
 
 #celular-cerrado{
     position: absolute;
-    top: 360px;
-    right: 30px;
+    top: 340px;
+    right: 130px;
+    transform: rotate(-10deg);
     height: auto;
     z-index: 1;
 }
@@ -437,6 +474,10 @@ h6 {
 }
 
 #flecha:hover{
-    transform:rotate(0deg);
-    left:30px;
+    transform:rotate(-45deg);
+    left:10px;
+}
+
+#animaciones{
+    background-image: url(images/Ojo.gif);
 }
