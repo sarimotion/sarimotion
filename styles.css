@@ -172,6 +172,98 @@ h6 {
     z-index: 2;
 }
 
+#pez-azul, #pez-amarillo, #pez-payaso{
+    position: absolute;
+    top: 34%;
+    right: 45%;
+    width: 10%;
+    height: auto;
+    z-index: 3;
+}
+
+#pez-payaso {
+    animation:
+        pez-azul-animation 10s linear infinite,
+        flotar 2s ease-in-out infinite alternate;
+}
+
+#pez-azul {
+    animation:
+        pez-azul-animation 5s linear infinite,
+        flotar 2s ease-in-out infinite alternate;
+}
+
+#pez-amarillo{
+    animation:
+    pez-amarillo-animation 5s linear infinite,
+    flotar 2s ease-in-out infinite alternate;
+}
+
+@keyframes pez-azul-animation {
+    0% {
+        top:40%;
+        left: 10%;
+        scale: 1 1;
+    }
+
+    49.9% {
+        left: 40%;
+        scale: 1 1;
+    }
+
+    50% {
+        left: 40%;
+        scale: -1 1;
+    }
+
+    99.9% {
+        left: 10%;
+        scale: -1 1;
+    }
+
+    100% {
+        top:40%;
+        left: 10%;
+        scale: 1 1;
+    }
+}
+
+@keyframes pez-amarillo-animation {
+    0%{
+        top:40%;
+        left: 40%;
+        scale: 1 1;
+    }
+    49.9% {
+        left:10%;
+        scale: 1 1;
+    }
+    50%{
+        top:40%;
+        left: 10%;
+        scale: -1 1;
+    }
+    99.9% {
+        left: 40%;
+        scale: -1 1;
+    }
+    100% {
+        top:40%;
+        left: 40%;
+        scale: 1 1;
+    }
+}
+
+@keyframes flotar {
+    from {
+        translate: 0 -55%;
+    }
+
+    to {
+        translate: 0 -35%;
+    }
+}
+
 #cursor{
     position: absolute;
     top: 100%;
@@ -321,4 +413,30 @@ h6 {
     right: 30px;
     height: auto;
     z-index: 1;
+}
+
+#celda13 img{
+    position: relative;
+    top:80px;
+    left:60px;
+    width: 100%;
+    height: auto;
+}
+
+#y-mas{
+    position: relative;
+    top:110px;
+    left:10px;
+}
+
+#flecha{
+    position: relative;
+    left:0px;
+    transform: rotate(-90deg);
+    transition: 0.2s;
+}
+
+#flecha:hover{
+    transform:rotate(0deg);
+    left:30px;
 }
