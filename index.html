@@ -14,8 +14,9 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <marquee class="ticker" direction="right" scrollamount="8">
-    <span id="ticker-text">Haz clic en el CD para escuchar una canción</span> · Siéntete libre de explorar · Bienvenidos
+  <canvas id="lienzo" aria-hidden="true"></canvas>
+  <marquee class="ticker" direction="left" scrollamount="8">
+    Bienvenidos · <span id="ticker-text">Haz clic en el CD para escuchar una canción</span> · Siéntete libre de explorar
   </marquee>
   <div class="fit">
   <div class="stage">
@@ -170,34 +171,13 @@
     </tr>
     <tr class="r7">
       <td class="celda" id="celda12" colspan="6">
-        Diseñado, ilustrado y desarrollado por Sarigna  - 2026
+        Diseñado por Sarigna  - 2026
       </td>
     </tr>
   </table>
   </div>
   </div>
   <audio id="cancion" src="audio/Lease.mp3" preload="none" loop></audio>
-  <script>
-    document.getElementById("boton-verde").addEventListener("click", function (event) {
-      event.preventDefault();
-      var celular = document.getElementById("celular-cerrado");
-      celular.src = "images/Abierto.png";
-      celular.alt = "Celular abierto";
-    });
-
-    var disc = document.getElementById("disc");
-    var cancion = document.getElementById("cancion");
-
-    disc.addEventListener("click", function () {
-      if (cancion.paused) {
-        var intento = cancion.play();
-        if (intento) {
-          intento.catch(function () {});
-        }
-      } else {
-        cancion.pause();
-      }
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
