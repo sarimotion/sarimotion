@@ -59,21 +59,44 @@ body {
 }
 
 .ticker {
-  position: relative;
-  z-index: 1;
-  display: block;
-  width: 100%;
-  margin: 0;
-  padding: 2px;
-  background: #000;
-  color: #fff;
-  font-family: "Fragment Mono", monospace;
-  font-size: 1rem;
-  line-height: 1.2;
-  border: 0;
-}
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 2px;
+    background: #000;
+    color: #fff;
+    font-family: "Fragment Mono", monospace;
+    font-size: 1rem;
+    line-height: 1.2;
+    border: 0;
+    overflow: hidden;
+  }
+  
+  .ticker-track {
+    display: flex;
+    width: max-content;
+    animation: ticker-scroll 30s linear infinite;
+  }
+  
+  .ticker-content {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding-right: 20px;
+  }
+  
+  @keyframes ticker-scroll {
+    from {
+      transform: translateX(0);
+    }
+  
+    to {
+      transform: translateX(-50%);
+    }
+  }
 
-#ticker-text {
+.ticker-text {
     color: var(--amarillo);
 }
 
@@ -91,21 +114,113 @@ body.pintando * {
   cursor: url("images/brush.png") 24 46, crosshair;
 }
 
+body.borrando,
+body.borrando * {
+  cursor: url("images/eraser.png") 16 40, crosshair;
+}
+
+body.lapizando,
+body.lapizando * {
+  cursor: url("images/pencil.png") 8 44, crosshair;
+}
+
+body.escribiendo,
+body.escribiendo * {
+  cursor: url("images/text.png") 8 12, text;
+}
+
 body.eligiendo,
 body.eligiendo * {
   cursor: url("images/picker.png") 6 42, crosshair;
 }
 
+body.rellenando,
+body.rellenando * {
+  cursor: url("images/bucket.png") 12 40, crosshair;
+}
+
 body.pintando #lienzo,
-body.eligiendo #lienzo {
+body.borrando #lienzo,
+body.lapizando #lienzo,
+body.escribiendo #lienzo,
+body.eligiendo #lienzo,
+body.rellenando #lienzo {
   pointer-events: auto;
 }
 
 body.pintando .paint-container,
 body.pintando .paint-container *,
+body.borrando .paint-container,
+body.borrando .paint-container *,
+body.lapizando .paint-container,
+body.lapizando .paint-container *,
+body.escribiendo .paint-container,
+body.escribiendo .paint-container *,
 body.eligiendo .paint-container,
-body.eligiendo .paint-container * {
+body.eligiendo .paint-container *,
+body.rellenando .paint-container,
+body.rellenando .paint-container * {
   cursor: pointer;
+}
+
+#texto-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+#texto-popup[hidden] {
+  display: none;
+}
+
+.texto-dialogo {
+  width: min(320px, calc(100vw - 32px));
+  margin: 0;
+  padding: 16px;
+  background: #ffed21;
+  border: 4px solid #000;
+  border-radius: 10px;
+  box-shadow: 6px 6px 0 #000;
+  font-family: "Fragment Mono", monospace;
+}
+
+.texto-dialogo p {
+  margin: 0 0 10px;
+}
+
+.texto-dialogo input {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 8px;
+  border: 3px solid #000;
+  font-family: "Comic Sans MS", "Comic Sans", cursive;
+  font-size: 18px;
+}
+
+.texto-acciones {
+  display: flex;
+  gap: 8px;
+}
+
+.texto-acciones button {
+  padding: 6px 12px;
+  border-radius: 10px;
+  border: 3px solid #000;
+  background: #fff;
+  font-family: "Fragment Mono", monospace;
+  cursor: pointer;
+}
+
+.texto-acciones button[type="submit"]{
+    background: #95ff57;
+}
+
+.texto-acciones button[type="button"]{
+    background: #ff448b;
 }
 
 .stage {
@@ -388,7 +503,7 @@ h6 {
 .celda8-content{
     width: 70%;
     height: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -406,6 +521,11 @@ h6 {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+}
+
+.celda8-content-items:hover{
+    transform: scale(1.1);
+    transition: 0.2s;
 }
 
 .celda8-content-items{
@@ -527,4 +647,35 @@ h6 {
 
 #ilustraciones {
     background-image: url(images/ilustracion.gif);
+}
+
+.salida-blanca,
+.intro-blanca {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: #fff;
+  pointer-events: none;
+}
+
+.salida-blanca {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.salida-blanca.visible {
+  opacity: 1;
+}
+
+.intro-blanca {
+  animation: intro-blanca 0.8s ease forwards;
+}
+
+@keyframes intro-blanca {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }

@@ -15,9 +15,17 @@
 </head>
 <body>
   <canvas id="lienzo" aria-hidden="true"></canvas>
-  <marquee class="ticker" direction="left" scrollamount="8">
-    Bienvenidos · <span id="ticker-text">Haz clic en el CD para escuchar una canción</span> · Siéntete libre de explorar
-  </marquee>
+  <div class="ticker">
+    <div class="ticker-track">
+      <div class="ticker-content">
+        <b style="background-color: yellow; color: black">Bienvenidos</b> · <span class="ticker-text">Haz clic en el CD para escuchar una canción</span> · Siéntete libre de explorar · Puedes poner texto en la pantalla con el botón de texto · Para prender el cel, <span style="color: #95ff57;">haz clic en SU botón verde</span> · El color por defecto seleccionado para dibujar <mark style="background-color: #ffffff; color: black">es negro</mark>, puedes cambiarlo con el botón de cuentagotas ·
+      </div>
+  
+      <div class="ticker-content" aria-hidden="true">
+        <b style="background-color: yellow; color: black">Bienvenidos</b> · <span class="ticker-text">Haz clic en el CD para escuchar una canción</span> · Siéntete libre de explorar · Puedes poner texto en la pantalla con el botón de texto · Para prender el cel, <span style="color: #95ff57;">haz clic en SU botón verde</span> · El color por defecto seleccionado para dibujar <mark style="background-color: #ffffff; color: black">es negro</mark>, puedes cambiarlo con el botón de cuentagotas ·
+      </div>
+    </div>
+  </div>
   <div class="fit">
   <div class="stage">
   <table class="table-container">
@@ -178,6 +186,16 @@
   </div>
   </div>
   <audio id="cancion" src="audio/Lease.mp3" preload="none" loop></audio>
+  <div id="texto-popup" hidden>
+    <form class="texto-dialogo" id="texto-form">
+      <p>Escribe algo</p>
+      <input id="texto-input" type="text" maxlength="80" autocomplete="off">
+      <div class="texto-acciones">
+        <button type="submit">Poner</button>
+        <button type="button" id="texto-cancelar">Cancelar</button>
+      </div>
+    </form>
+  </div>
   <script src="script.js"></script>
 </body>
 </html>
