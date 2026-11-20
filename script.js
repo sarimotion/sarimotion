@@ -25,6 +25,8 @@
   var zoomPointers = {};
   var pinchStart = null;
   var pinchUsed = false;
+  var touchCount = 0;
+  var touchPinch = null;
   var sprayTimer = null;
   var sprayPoint = null;
   try {
@@ -221,6 +223,80 @@
     zoomLevel = nextZoom;
     applyZoom();
   }
+
+  function canvasLayoutOrigin() {
+    var rect = lienzo.getBoundingClientRect();
+    return {
+      x: rect.left - zoomTranslate.x,
+      y: rect.top - zoomTranslate.y
+    };
+  }
+
+  function followFingers(touches) {
+    var first = touches[0];
+    var second = touches[1];
+    var dx = first.clientX - second.clientX;
+    var dy = first.clientY - second.clientY;
+    var distance = Math.sqrt(dx * dx + dy * dy) || 1;
+    var midX = (first.clientX + second.clientX) / 2;
+    var midY = (first.clientY + second.clientY) / 2;
+    if (!touchPinch) {
+      touchPinch = {
+        distance: distance,
+        zoom: zoomLevel || 1,
+        midX: midX,
+        midY: midY,
+        tx: zoomTranslate.x,
+        ty: zoomTranslate.y
+      };
+      return;
+    }
+    var nextZoom = Math.max(1, Math.min(4, touchPinch.zoom * (distance / touchPinch.distance)));
+    var origin = canvasLayoutOrigin();
+    var localX = (touchPinch.midX - origin.x - touchPinch.tx) / touchPinch.zoom;
+    var localY = (touchPinch.midY - origin.y - touchPinch.ty) / touchPinch.zoom;
+    zoomLevel = nextZoom;
+    if (nextZoom <= 1) {
+      applyZoom();
+      return;
+    }
+    zoomTranslate.x = (midX - origin.x) - localX * nextZoom;
+    zoomTranslate.y = (midY - origin.y) - localY * nextZoom;
+    applyZoom();
+  }
+
+  document.addEventListener("touchstart", function (event) {
+    touchCount = event.touches.length;
+    if (!usesTouchPicker() || event.touches.length < 2) {
+      return;
+    }
+    event.preventDefault();
+    drawing = false;
+    currentStroke = null;
+    window.clearInterval(sprayTimer);
+    followFingers(event.touches);
+  }, { passive: false, capture: true });
+
+  document.addEventListener("touchmove", function (event) {
+    touchCount = event.touches.length;
+    if (!usesTouchPicker() || event.touches.length < 2) {
+      return;
+    }
+    event.preventDefault();
+    followFingers(event.touches);
+  }, { passive: false });
+
+  document.addEventListener("touchend", function (event) {
+    touchCount = event.touches.length;
+    if (event.touches.length < 2) {
+      touchPinch = null;
+    }
+  });
+
+  document.addEventListener("touchcancel", function (event) {
+    touchCount = event.touches.length;
+    touchPinch = null;
+  });
 
   function zoomPointerDistance() {
     var ids = Object.keys(zoomPointers);
@@ -574,6 +650,9 @@
   }, true);
 
   lienzo.addEventListener("pointerdown", function (event) {
+    if (usesTouchPicker() && touchCount >= 2) {
+      return;
+    }
     if (activeTool() === "zoom") {
       zoomPointers[event.pointerId] = { x: event.clientX, y: event.clientY };
       lienzo.setPointerCapture(event.pointerId);
@@ -701,7 +780,7 @@
     if (event && zoomPointers[event.pointerId]) {
       delete zoomPointers[event.pointerId];
       if (Object.keys(zoomPointers).length === 0) {
-        if (!pinchUsed && event.button === 0 && activeTool() === "zoom") {
+        if (!pinchUsed && event.button === 0 && activeTool() === "zoom" && !usesTouchPicker()) {
           setZoom(zoomLevel * 1.5, event.clientX, event.clientY);
         }
         pinchUsed = false;

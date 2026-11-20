@@ -149,6 +149,13 @@ body.ampliando * {
   cursor: url("images/zoom.png") 16 16, zoom-in;
 }
 
+@media (pointer: coarse) {
+  html,
+  body#index {
+    touch-action: pan-y;
+  }
+}
+
 body.pintando #lienzo,
 body.borrando #lienzo,
 body.lapizando #lienzo,
