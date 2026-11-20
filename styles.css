@@ -30,7 +30,7 @@ body {
   height: 100%;
 }
 
-body {
+body#index {
   position: relative;
   isolation: isolate;
   min-height: 100vh;
@@ -139,12 +139,24 @@ body.rellenando * {
   cursor: url("images/bucket.png") 12 40, crosshair;
 }
 
+body.rociando,
+body.rociando * {
+  cursor: url("images/spray.png") 12 40, crosshair;
+}
+
+body.ampliando,
+body.ampliando * {
+  cursor: url("images/zoom.png") 16 16, zoom-in;
+}
+
 body.pintando #lienzo,
 body.borrando #lienzo,
 body.lapizando #lienzo,
 body.escribiendo #lienzo,
 body.eligiendo #lienzo,
-body.rellenando #lienzo {
+body.rellenando #lienzo,
+body.rociando #lienzo,
+body.ampliando #lienzo {
   pointer-events: auto;
 }
 
@@ -159,18 +171,27 @@ body.escribiendo .paint-container *,
 body.eligiendo .paint-container,
 body.eligiendo .paint-container *,
 body.rellenando .paint-container,
-body.rellenando .paint-container * {
+body.rellenando .paint-container *,
+body.rociando .paint-container,
+body.rociando .paint-container *,
+body.ampliando .paint-container,
+body.ampliando .paint-container * {
   cursor: pointer;
 }
 
 #texto-popup {
   position: fixed;
   inset: 0;
-  z-index: 30;
+  z-index: 80;
   display: flex;
   align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.35);
+  pointer-events: auto;
+}
+
+body:has(#texto-popup:not([hidden])) #lienzo {
+  pointer-events: none;
 }
 
 #texto-popup[hidden] {
@@ -604,6 +625,7 @@ h6 {
 
 #celular-cerrado{
     position: absolute;
+    width: 214px;
     top: 340px;
     right: 130px;
     transform: rotate(-10deg);
@@ -653,14 +675,14 @@ h6 {
 .intro-blanca {
   position: fixed;
   inset: 0;
-  z-index: 50;
+  z-index: 200;
   background: #fff;
   pointer-events: none;
 }
 
 .salida-blanca {
   opacity: 0;
-  transition: opacity 0.6s ease;
+  transition: opacity 1s ease-in;
 }
 
 .salida-blanca.visible {
@@ -668,14 +690,78 @@ h6 {
 }
 
 .intro-blanca {
-  animation: intro-blanca 0.8s ease forwards;
+  animation: intro-blanca 1.5s ease-in forwards;
 }
 
 @keyframes intro-blanca {
-  from {
+  0% {
     opacity: 1;
   }
-  to {
+  40% {
+    opacity: 1;
+  }
+  100% {
     opacity: 0;
   }
+}
+
+.now-playing-container{
+  position: absolute;
+  top: 25px;
+  right: 10px;
+  background-color:var(--amarillo);
+  color: #000000;
+  padding: 10px;
+  border-radius: 5px;
+  z-index: 100;
+}
+
+.now-playing-container[hidden] {
+  display: none;
+}
+
+.zoom-container{
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  z-index: 100;
+  width: max-content;
+  max-width: calc(100vw - 24px);
+}
+
+.zoom-container[hidden] {
+  display: none;
+}
+
+.zoom-mobile {
+  display: none;
+}
+
+@media (max-width: 820px) {
+  .zoom-desktop {
+    display: none;
+  }
+
+  .zoom-mobile {
+    display: inline;
+  }
+}
+
+.zoom-content{
+  text-align: center;
+  padding: 5px;
+  border: 5px solid #000;
+  border-radius: 10px;
+  background-color: #fff;
+  font-weight: bold;
+  color: #000;
+  cursor: pointer;
+  transition: 0.2s;
+  box-shadow: 2px 2px 0px 0 rgba(0, 0, 0, 1);
 }

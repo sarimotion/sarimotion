@@ -13,7 +13,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Galindo&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body id="index">
+  <div class="zoom-container" hidden>
+    <div class="zoom-content" id="plus">
+      <span class="zoom-desktop">Clic izquierdo para ampliar | Clic derecho para alejar</span>
+      <span class="zoom-mobile">Acércate y aléjate con los dedos...Como siempre</span>
+    </div>
+  </div>
   <canvas id="lienzo" aria-hidden="true"></canvas>
   <div class="ticker">
     <div class="ticker-track">
@@ -25,6 +31,10 @@
         <b style="background-color: yellow; color: black">Bienvenidos</b> · <span class="ticker-text">Haz clic en el CD para escuchar una canción</span> · Siéntete libre de explorar · Puedes poner texto en la pantalla con el botón de texto · Para prender el cel, <span style="color: #95ff57;">haz clic en SU botón verde</span> · El color por defecto seleccionado para dibujar <mark style="background-color: #ffffff; color: black">es negro</mark>, puedes cambiarlo con el botón de cuentagotas ·
       </div>
     </div>
+  </div>
+  <div id="now-playing" class="now-playing-container" hidden>
+    <span id="now-playing-text">Ahora tocando:</span>
+    <span id="now-playing-song">Canción</span>
   </div>
   <div class="fit">
   <div class="stage">
@@ -185,11 +195,12 @@
   </table>
   </div>
   </div>
-  <audio id="cancion" src="audio/Lease.mp3" preload="none" loop></audio>
+  <audio id="cancion" src="audio/Lease - Takeshi Abo.mp3" preload="none" loop></audio>
+  <audio id="bootaudio" src="audio/bootaudio.mp3" preload="auto"></audio>
   <div id="texto-popup" hidden>
     <form class="texto-dialogo" id="texto-form">
       <p>Escribe algo</p>
-      <input id="texto-input" type="text" maxlength="80" autocomplete="off">
+      <input id="texto-input" type="text" maxlength="80" autocomplete="off" tabindex="0">
       <div class="texto-acciones">
         <button type="submit">Poner</button>
         <button type="button" id="texto-cancelar">Cancelar</button>

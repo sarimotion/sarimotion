@@ -6,6 +6,8 @@
   var lapiz = document.getElementById("lapiz");
   var texto = document.getElementById("texto");
   var bote = document.getElementById("bote");
+  var aerosol = document.getElementById("aerosol");
+  var lupa = document.getElementById("lupa");
   var gotas = document.getElementById("gotas");
   var lienzo = document.getElementById("lienzo");
   var ctx = lienzo.getContext("2d");
@@ -14,6 +16,20 @@
   var fondo = new Image();
   var paintColor = "#000000";
   var brushSize = 16;
+  var spraySize = 10;
+  var zoomLevel = 1;
+  var zoomTranslate = { x: 0, y: 0 };
+  var zoomContainer = document.querySelector(".zoom-container");
+  var zoomHintTimer = null;
+  var zoomHintSeen = false;
+  var zoomPointers = {};
+  var pinchStart = null;
+  var pinchUsed = false;
+  var sprayTimer = null;
+  var sprayPoint = null;
+  try {
+    zoomHintSeen = sessionStorage.getItem("sarigna-zoom-hint") === "1";
+  } catch (error) {}
   var strokes = [];
   var currentStroke = null;
   var drawing = false;
@@ -23,6 +39,8 @@
   var textoInput = document.getElementById("texto-input");
   var celda2 = document.getElementById("celda2");
   var celda3 = document.getElementById("celda3");
+  var nowPlaying = document.getElementById("now-playing");
+  var nowPlayingSong = document.getElementById("now-playing-song");
 
   if(document.language == "es"){
     celda2.style.backgroundImage = "url(images/Welcome.png)";
@@ -37,42 +55,69 @@
     }
     celular.dataset.abriendo = "1";
     celular.alt = "Celular abierto";
+    var bootaudio = document.getElementById("bootaudio");
+    bootaudio.currentTime = 0;
+    var arranque = bootaudio.play();
+    if (arranque) {
+      arranque.catch(salirAlInicio);
+    }
 
     function salirAlInicio() {
       if (celular.dataset.salida === "1") {
         return;
       }
       celular.dataset.salida = "1";
-      window.setTimeout(function () {
-        var velo = document.createElement("div");
-        velo.className = "salida-blanca";
-        document.body.appendChild(velo);
+      var velo = document.createElement("div");
+      var yendo = false;
+      velo.className = "salida-blanca";
+      document.body.appendChild(velo);
+      window.requestAnimationFrame(function () {
         window.requestAnimationFrame(function () {
-          window.requestAnimationFrame(function () {
-            velo.classList.add("visible");
-          });
+          velo.classList.add("visible");
         });
-        window.setTimeout(function () {
-          window.location.href = "homepage.html";
-        }, 600);
-      }, 300);
+      });
+      function ir() {
+        if (yendo) {
+          return;
+        }
+        yendo = true;
+        window.location.href = "homepage.html";
+      }
+      velo.addEventListener("transitionend", ir);
+      window.setTimeout(ir, 900);
     }
 
-    celular.addEventListener("load", salirAlInicio);
+    bootaudio.addEventListener("timeupdate", function () {
+      if (bootaudio.currentTime >= 2) {
+        salirAlInicio();
+      }
+    });
+
     celular.src = "images/Abierto.png";
-    if (celular.complete) {
-      salirAlInicio();
-    }
   });
+
+  function nombreCancion() {
+    var archivo = decodeURIComponent(cancion.src.split("/").pop().split("?")[0]);
+    var nombre = archivo.replace(/\.[^.]+$/, "");
+    return nombre || "Canción";
+  }
+
+  function mostrarCancion() {
+    nowPlayingSong.textContent = nombreCancion();
+    nowPlaying.hidden = false;
+  }
 
   disc.addEventListener("click", function () {
     if (cancion.paused) {
       var intento = cancion.play();
       if (intento) {
-        intento.catch(function () {});
+        intento.then(mostrarCancion).catch(function () {});
+      } else {
+        mostrarCancion();
       }
     } else {
       cancion.pause();
+      nowPlaying.hidden = true;
     }
   });
 
@@ -85,7 +130,7 @@
     if (button) {
       button.classList.add("pressed");
     }
-    document.body.classList.remove("pintando", "borrando", "lapizando", "escribiendo", "eligiendo", "rellenando");
+    document.body.classList.remove("pintando", "borrando", "lapizando", "escribiendo", "eligiendo", "rellenando", "rociando", "ampliando");
     if (brocha.classList.contains("pressed")) {
       document.body.classList.add("pintando");
     } else if (borrador.classList.contains("pressed")) {
@@ -98,6 +143,15 @@
       document.body.classList.add("eligiendo");
     } else if (bote.classList.contains("pressed")) {
       document.body.classList.add("rellenando");
+    } else if (aerosol.classList.contains("pressed")) {
+      document.body.classList.add("rociando");
+    } else if (lupa.classList.contains("pressed")) {
+      document.body.classList.add("ampliando");
+    }
+    if (lupa.classList.contains("pressed")) {
+      showZoomHint();
+    } else {
+      zoomContainer.hidden = true;
     }
   }
 
@@ -120,7 +174,88 @@
     if (bote.classList.contains("pressed")) {
       return "bucket";
     }
+    if (aerosol.classList.contains("pressed")) {
+      return "spray";
+    }
+    if (lupa.classList.contains("pressed")) {
+      return "zoom";
+    }
     return null;
+  }
+
+  function showZoomHint() {
+    if (zoomHintSeen) {
+      return;
+    }
+    zoomHintSeen = true;
+    try {
+      sessionStorage.setItem("sarigna-zoom-hint", "1");
+    } catch (error) {}
+    zoomContainer.hidden = false;
+    window.clearTimeout(zoomHintTimer);
+    zoomHintTimer = window.setTimeout(function () {
+      zoomContainer.hidden = true;
+    }, 5000);
+  }
+
+  function applyZoom() {
+    if (zoomLevel <= 1) {
+      zoomLevel = 1;
+      zoomTranslate.x = 0;
+      zoomTranslate.y = 0;
+      lienzo.style.transform = "";
+      return;
+    }
+    lienzo.style.transformOrigin = "0 0";
+    lienzo.style.transform = "translate(" + zoomTranslate.x + "px, " + zoomTranslate.y + "px) scale(" + zoomLevel + ")";
+  }
+
+  function setZoom(next, clientX, clientY) {
+    var oldZoom = zoomLevel;
+    var nextZoom = Math.max(1, Math.min(4, next));
+    if (clientX != null && clientY != null && nextZoom !== oldZoom) {
+      var point = pointFromEvent({ clientX: clientX, clientY: clientY });
+      zoomTranslate.x += point.x * (oldZoom - nextZoom);
+      zoomTranslate.y += point.y * (oldZoom - nextZoom);
+    }
+    zoomLevel = nextZoom;
+    applyZoom();
+  }
+
+  function zoomPointerDistance() {
+    var ids = Object.keys(zoomPointers);
+    if (ids.length < 2) {
+      return 0;
+    }
+    var first = zoomPointers[ids[0]];
+    var second = zoomPointers[ids[1]];
+    var dx = first.x - second.x;
+    var dy = first.y - second.y;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  function paintSprayDots(stroke, from) {
+    paintCtx.globalCompositeOperation = "source-over";
+    paintCtx.fillStyle = stroke.color;
+    var i;
+    for (i = from; i < stroke.points.length; i++) {
+      paintCtx.fillRect(stroke.points[i].x, stroke.points[i].y, 1, 1);
+    }
+    composite();
+  }
+
+  function sprayDots(stroke, point) {
+    var radius = stroke.size / 2;
+    var count = Math.max(8, Math.round(stroke.size));
+    var i;
+    for (i = 0; i < count; i++) {
+      var angle = Math.random() * Math.PI * 2;
+      var distance = Math.sqrt(Math.random()) * radius;
+      stroke.points.push({
+        x: point.x + Math.cos(angle) * distance,
+        y: point.y + Math.sin(angle) * distance
+      });
+    }
   }
 
   function floodFill(x, y, hex) {
@@ -270,6 +405,14 @@
     target.lineWidth = width;
     target.lineCap = "round";
     target.lineJoin = "round";
+    if (stroke.tool === "spray") {
+      target.globalCompositeOperation = "source-over";
+      target.fillStyle = stroke.color;
+      stroke.points.forEach(function (dot) {
+        target.fillRect(dot.x, dot.y, 1, 1);
+      });
+      return;
+    }
     if (stroke.tool === "text") {
       target.font = "32px \"Comic Sans MS\", \"Comic Sans\", cursive";
       target.textBaseline = "top";
@@ -319,9 +462,11 @@
 
   function pointFromEvent(event) {
     var rect = lienzo.getBoundingClientRect();
+    var width = lienzo.offsetWidth || 1;
+    var height = lienzo.offsetHeight || 1;
     return {
-      x: event.clientX - rect.left,
-      y: event.clientY - rect.top
+      x: ((event.clientX - rect.left) / rect.width) * width,
+      y: ((event.clientY - rect.top) / rect.height) * height
     };
   }
 
@@ -331,6 +476,53 @@
       return hex.length === 1 ? "0" + hex : hex;
     }
     return "#" + channel(r) + channel(g) + channel(b);
+  }
+
+  function usesTouchPicker() {
+    return window.matchMedia("(pointer: coarse)").matches || !window.EyeDropper;
+  }
+
+  function parseCssColor(value) {
+    var match = /rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)(?:\s*,\s*([0-9.]+))?\s*\)/.exec(value || "");
+    if (!match) {
+      return null;
+    }
+    return {
+      r: Number(match[1]),
+      g: Number(match[2]),
+      b: Number(match[3]),
+      a: match[4] == null ? 1 : Number(match[4])
+    };
+  }
+
+  function canvasColorAt(clientX, clientY) {
+    var point = pointFromEvent({ clientX: clientX, clientY: clientY });
+    var dpr = window.devicePixelRatio || 1;
+    var x = Math.floor(point.x * dpr);
+    var y = Math.floor(point.y * dpr);
+    if (x < 0 || y < 0 || x >= lienzo.width || y >= lienzo.height) {
+      return null;
+    }
+    var pixel = ctx.getImageData(x, y, 1, 1).data;
+    if (pixel[3] === 0) {
+      return null;
+    }
+    return rgbToHex(pixel[0], pixel[1], pixel[2]);
+  }
+
+  function visibleColorAt(clientX, clientY) {
+    var stack = document.elementsFromPoint(clientX, clientY);
+    var i;
+    for (i = 0; i < stack.length; i++) {
+      if (stack[i] === lienzo) {
+        return canvasColorAt(clientX, clientY);
+      }
+      var bg = parseCssColor(window.getComputedStyle(stack[i]).backgroundColor);
+      if (bg && bg.a > 0.15) {
+        return rgbToHex(bg.r, bg.g, bg.b);
+      }
+    }
+    return canvasColorAt(clientX, clientY);
   }
 
   function sampleColor(point) {
@@ -348,11 +540,20 @@
     selectTool(brocha);
   }
 
+  function takeTouchColor(clientX, clientY) {
+    var color = visibleColorAt(clientX, clientY);
+    if (!color) {
+      return;
+    }
+    paintColor = color;
+    selectTool(brocha);
+  }
+
   paintButtons.forEach(function (button) {
     button.addEventListener("click", function () {
       var wasPressed = button.classList.contains("pressed");
       selectTool(wasPressed ? null : button);
-      if (!wasPressed && button === gotas && window.EyeDropper) {
+      if (!wasPressed && button === gotas && window.EyeDropper && !usesTouchPicker()) {
         new EyeDropper().open().then(function (result) {
           paintColor = result.sRGBHex;
           selectTool(brocha);
@@ -361,7 +562,27 @@
     });
   });
 
+  document.addEventListener("pointerdown", function (event) {
+    if (!usesTouchPicker() || !gotas.classList.contains("pressed") || event.button !== 0) {
+      return;
+    }
+    if (event.target.closest && (event.target.closest(".paint-container") || event.target.closest("#texto-popup"))) {
+      return;
+    }
+    event.preventDefault();
+    takeTouchColor(event.clientX, event.clientY);
+  }, true);
+
   lienzo.addEventListener("pointerdown", function (event) {
+    if (activeTool() === "zoom") {
+      zoomPointers[event.pointerId] = { x: event.clientX, y: event.clientY };
+      lienzo.setPointerCapture(event.pointerId);
+      if (Object.keys(zoomPointers).length >= 2) {
+        pinchUsed = true;
+        pinchStart = { distance: zoomPointerDistance(), zoom: zoomLevel };
+      }
+      return;
+    }
     if (event.button !== 0) {
       return;
     }
@@ -372,10 +593,13 @@
     }
     var tool = activeTool();
     if (tool === "text") {
+      event.preventDefault();
       pendingTextPoint = point;
       textoInput.value = "";
       textoPopup.hidden = false;
-      textoInput.focus();
+      window.setTimeout(function () {
+        textoInput.focus();
+      }, 0);
       return;
     }
     if (tool === "bucket") {
@@ -387,6 +611,30 @@
       });
       floodFill(point.x, point.y, paintColor);
       composite();
+      return;
+    }
+    if (tool === "spray") {
+      drawing = true;
+      sprayPoint = point;
+      currentStroke = {
+        tool: "spray",
+        color: paintColor,
+        size: spraySize,
+        points: []
+      };
+      strokes.push(currentStroke);
+      sprayDots(currentStroke, point);
+      paintSprayDots(currentStroke, 0);
+      window.clearInterval(sprayTimer);
+      sprayTimer = window.setInterval(function () {
+        if (!drawing || !currentStroke || currentStroke.tool !== "spray") {
+          return;
+        }
+        var from = currentStroke.points.length;
+        sprayDots(currentStroke, sprayPoint);
+        paintSprayDots(currentStroke, from);
+      }, 40);
+      lienzo.setPointerCapture(event.pointerId);
       return;
     }
     if (tool !== "brush" && tool !== "eraser" && tool !== "pencil") {
@@ -406,7 +654,31 @@
   });
 
   lienzo.addEventListener("pointermove", function (event) {
+    if (zoomPointers[event.pointerId]) {
+      zoomPointers[event.pointerId] = { x: event.clientX, y: event.clientY };
+      if (pinchStart && Object.keys(zoomPointers).length >= 2) {
+        var distance = zoomPointerDistance();
+        if (pinchStart.distance > 0) {
+          var ids = Object.keys(zoomPointers);
+          var first = zoomPointers[ids[0]];
+          var second = zoomPointers[ids[1]];
+          setZoom(
+            pinchStart.zoom * (distance / pinchStart.distance),
+            (first.x + second.x) / 2,
+            (first.y + second.y) / 2
+          );
+        }
+      }
+      return;
+    }
     if (!drawing || !currentStroke) {
+      return;
+    }
+    if (currentStroke.tool === "spray") {
+      sprayPoint = pointFromEvent(event);
+      var from = currentStroke.points.length;
+      sprayDots(currentStroke, sprayPoint);
+      paintSprayDots(currentStroke, from);
       return;
     }
     var point = pointFromEvent(event);
@@ -425,13 +697,32 @@
     composite();
   });
 
-  function stopDrawing() {
+  function stopDrawing(event) {
+    if (event && zoomPointers[event.pointerId]) {
+      delete zoomPointers[event.pointerId];
+      if (Object.keys(zoomPointers).length === 0) {
+        if (!pinchUsed && event.button === 0 && activeTool() === "zoom") {
+          setZoom(zoomLevel * 1.5, event.clientX, event.clientY);
+        }
+        pinchUsed = false;
+        pinchStart = null;
+      }
+    }
     drawing = false;
     currentStroke = null;
+    sprayPoint = null;
+    window.clearInterval(sprayTimer);
   }
 
   lienzo.addEventListener("pointerup", stopDrawing);
   lienzo.addEventListener("pointercancel", stopDrawing);
+  lienzo.addEventListener("contextmenu", function (event) {
+    if (activeTool() !== "zoom") {
+      return;
+    }
+    event.preventDefault();
+    setZoom(zoomLevel / 1.5, event.clientX, event.clientY);
+  });
 
   function closeTextPopup() {
     textoPopup.hidden = true;
@@ -456,6 +747,12 @@
 
   document.getElementById("texto-cancelar").addEventListener("click", closeTextPopup);
 
+  textoInput.addEventListener("pointerdown", function () {
+    window.setTimeout(function () {
+      textoInput.focus();
+    }, 0);
+  });
+
   window.addEventListener("keydown", function (event) {
     if (event.key === "Escape" && !textoPopup.hidden) {
       closeTextPopup();
@@ -473,6 +770,10 @@
       return;
     }
     event.preventDefault();
+    if (aerosol.classList.contains("pressed")) {
+      spraySize = Math.max(2, Math.min(80, spraySize + (grow ? 2 : -2)));
+      return;
+    }
     brushSize = Math.max(2, Math.min(80, brushSize + (grow ? 2 : -2)));
   });
 
