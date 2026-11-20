@@ -7,10 +7,8 @@
   <meta name="description" content="Espacio personal y repositorio creativo de Sarigna: animaciones, juegos e ilustraciones.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fragment+Mono&family=Galindo&display=swap" rel="stylesheet">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Galindo&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Galindo&display=swap" rel="stylesheet">
+  <link rel="preload" href="fonts/fragment-mono-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body id="index">
@@ -199,6 +197,12 @@
   <audio id="bootaudio" src="audio/bootaudio.mp3" preload="auto"></audio>
   <div id="texto-popup" hidden>
     <form class="texto-dialogo" id="texto-form">
+      <p>Selecciona una fuente:</p>
+      <select id="texto-fuente">
+        <option value="&quot;Comic Sans MS&quot;, &quot;Comic Sans&quot;, cursive" selected>Comic Sans</option>
+        <option value="Papyrus, fantasy">Papyrus</option>
+        <option value="Arial, sans-serif">Arial</option>
+      </select>
       <p>Escribe algo</p>
       <input id="texto-input" type="text" maxlength="80" autocomplete="off" tabindex="0">
       <div class="texto-acciones">

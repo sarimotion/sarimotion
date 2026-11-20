@@ -37,6 +37,7 @@
   var drawing = false;
   var pendingTextPoint = null;
   var textoPopup = document.getElementById("texto-popup");
+  var textoFuente = document.getElementById("texto-fuente");
   var textoForm = document.getElementById("texto-form");
   var textoInput = document.getElementById("texto-input");
   var celda2 = document.getElementById("celda2");
@@ -510,7 +511,7 @@
       return;
     }
     if (stroke.tool === "text") {
-      target.font = "32px \"Comic Sans MS\", \"Comic Sans\", cursive";
+      target.font = "32px " + (stroke.font || "\"Comic Sans MS\", \"Comic Sans\", cursive");
       target.textBaseline = "top";
       target.fillText(stroke.text, stroke.x, stroke.y);
       target.globalCompositeOperation = "source-over";
@@ -695,6 +696,7 @@
       event.preventDefault();
       pendingTextPoint = point;
       textoInput.value = "";
+      textoInput.style.fontFamily = textoFuente.value;
       textoPopup.hidden = false;
       window.setTimeout(function () {
         textoInput.focus();
@@ -835,6 +837,7 @@
       strokes.push({
         tool: "text",
         color: paintColor,
+        font: textoFuente.value,
         text: value,
         x: pendingTextPoint.x,
         y: pendingTextPoint.y
@@ -845,6 +848,10 @@
   });
 
   document.getElementById("texto-cancelar").addEventListener("click", closeTextPopup);
+
+  textoFuente.addEventListener("change", function () {
+    textoInput.style.fontFamily = textoFuente.value;
+  });
 
   textoInput.addEventListener("pointerdown", function () {
     window.setTimeout(function () {
