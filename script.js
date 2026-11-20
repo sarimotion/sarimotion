@@ -49,8 +49,28 @@
     celda3.style.backgroundImage = "url(images/side-right.png)";
   }
 
+  var salidaCancelada = false;
+
+  window.addEventListener("pageshow", function (event) {
+    var velos = document.querySelectorAll(".salida-blanca");
+    if (!event.persisted && velos.length === 0) {
+      return;
+    }
+    salidaCancelada = true;
+    window.clearTimeout(window.__salidaTimer);
+    velos.forEach(function (node) {
+      node.remove();
+    });
+    var celular = document.getElementById("celular-cerrado");
+    if (celular) {
+      delete celular.dataset.abriendo;
+      delete celular.dataset.salida;
+    }
+  });
+
   document.getElementById("boton-verde").addEventListener("click", function (event) {
     event.preventDefault();
+    salidaCancelada = false;
     var celular = document.getElementById("celular-cerrado");
     if (celular.dataset.abriendo === "1") {
       return;
@@ -79,14 +99,14 @@
         });
       });
       function ir() {
-        if (yendo) {
+        if (yendo || salidaCancelada) {
           return;
         }
         yendo = true;
         window.location.href = "homepage.html";
       }
       velo.addEventListener("transitionend", ir);
-      window.setTimeout(ir, 900);
+      window.__salidaTimer = window.setTimeout(ir, 900);
     }
 
     bootaudio.addEventListener("timeupdate", function () {
