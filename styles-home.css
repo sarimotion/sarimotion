@@ -1,0 +1,212 @@
+@import url('https://fonts.googleapis.com/css2?family=Galindo&display=swap');
+
+@font-face {
+  font-family: "Fragment Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/fragment-mono-400.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Fragment Mono";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fonts/fragment-mono-400.woff2") format("woff2");
+}
+
+@property --amarillo {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #FFED21;
+}
+
+@property --morado-oscuro {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #35117e;
+}
+
+@property --morado-claro {	
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #601fe4;
+}
+
+@property --aqua-verde {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #41FFAD;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+body {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  padding: 0;
+  font-family: "Fragment Mono", monospace;
+  font-weight: 400;
+  font-style: normal;
+  background-image: url(images/Fondo-1.jpg);
+  background-size: cover;
+  background-position: center;
+  font-size: 16px;
+}
+
+.container-layout {
+    position: relative;
+    width: 1400px;
+    margin: 0 auto;
+}
+
+.marco {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    pointer-events: none;
+    overflow: visible;
+}
+
+.marco path {
+    fill: none;
+    stroke: #601FE4;
+    stroke-width: 4;
+    stroke-linecap: butt;
+    stroke-linejoin: round;
+}
+
+.container-layout table{
+    width: 1400px;
+    margin: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+}
+
+.container-layout td {
+    overflow: visible;
+    vertical-align: top;
+}
+
+#celda1{
+    position: relative;
+    width: 416px;
+    height: 84px;
+}
+
+.now-playing-song{
+    padding: 5px;
+    padding-left: 40px;
+    background: linear-gradient(to bottom, #EDF0F8 0%, #bdd0f1 11%, #f8f8f9 48%, #e0e9f4 100% );
+}
+
+.listening{
+    padding-left: 60px;
+    margin-top: 10px;
+}
+
+.listening > span{
+    padding-left: 40px;
+}
+
+#now-playing-song-text{
+    color: blue;
+    text-decoration: underline;
+    text-decoration-color: blue;
+    text-decoration-thickness: 2px;
+    text-decoration-style: solid;
+    text-decoration-skip-ink: none;
+    text-decoration-skip-ink: none;
+}
+
+#now-playing-song-icon{
+    width: 24px;
+}
+
+#gato-musica{
+    position: absolute;
+}
+
+#celda2 {
+    height: 84px;
+}
+
+#celda3,
+#celda3b {
+    height: 199px;
+}
+
+#celda4 {
+    height: 114px;
+    vertical-align: bottom;
+}
+
+.menu {
+    padding: 0 0 16px 12px;
+    white-space: nowrap;
+}
+
+#celda5 {
+    height: 114px;
+    padding: 22px 16px 10px 20px;
+}
+
+.radio-card {
+    height: 100%;
+    padding: 12px 16px;
+    border: 4px solid #601FE4;
+    border-radius: 18px;
+    color: #5b27e0;
+    font-family: "Galindo", sans-serif;
+    font-size: 1.6rem;
+}
+
+.radio-card p {
+    margin: 0;
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 5px;
+}
+
+.menu-item {
+    display: inline-block;
+    text-align: center;
+    width: 197px;
+    border-radius: 10px;
+    border:4px solid black;
+    background: linear-gradient(to top, #8f1fe4 0%, #601fe4 20%, #35117e 42%, #340f80 67%, #b5ffce 100% );
+    height: 65px;
+    font-family: "Galindo";
+    font-size: 1.5rem;
+    color: var(--aqua-verde);
+    text-decoration: none;
+    line-height: 65px;
+    transition: 0.3s ease-in-out;
+}
+
+.menu-item:hover {
+    position: relative;
+    top:5px;
+    transition: 0.3s ease-in-out;
+}
